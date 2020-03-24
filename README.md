@@ -1,3 +1,5 @@
+![Github Build Status](https://github.com/OlegYch/sbt-cached-ci/workflows/Continuous%20Integration/badge.svg)
+[![Travis Build Status](https://travis-ci.com/OlegYch/sbt-cached-ci.svg?branch=master)](https://travis-ci.com/OlegYch/sbt-cached-ci)
 # sbt-cached-ci
 
 Incremental sbt builds for CI environments.
