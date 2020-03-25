@@ -29,7 +29,7 @@ object CachedCiPlugin extends AutoPlugin {
       import extracted._
       val thisProject = thisProjectRef.value
       val token = target.value / ".lastCachedCiTestFull"
-      val quick = token.exists() && token.lastModified() > (System.currentTimeMillis() - cachedCiTestFullPeriod.value.toSeconds)
+      val quick = token.exists() && token.lastModified() > (System.currentTimeMillis() - cachedCiTestFullPeriod.value.toMillis)
       if (quick) {
         runTask(thisProject / cachedCiTestQuick, s)
       } else {
