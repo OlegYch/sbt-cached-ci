@@ -10,11 +10,15 @@ The plugin introduces a new task `cachedCiTest` which calls `testQuick` and call
 
 Supported sbt version - 1.x.
 
-0. In `./project/plugins.sbt` add:
+1. In `./project/plugins.sbt` add:
     ```
     addSbtPlugin("org.olegych" %% "sbt-cached-ci" % latest_version)
     ```
-0. Configure your CI to cache current directory and call `cachedCiTest` task, see samples at [.travis.yml](.travis.yml) or [.github/workflows/test.yml](.github/workflows/test.yml) 
+1. Configure your CI to cache current directory and call `cachedCiTest` task, see samples at [.travis.yml](.travis.yml) or [.github/workflows/test.yml](.github/workflows/test.yml) 
  
-### Testing
 
+Period between full test runs can be configured with `cachedCiTestFullPeriod` setting.
+
+`cachedCiTestQuick` configures what is executed on every build.
+
+`cachedCiTestFull` configures what is executed every `cachedCiTestFullPeriod`.
