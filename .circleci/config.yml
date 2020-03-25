@@ -15,7 +15,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-dependencies
+            - v1-dependencies-{{ .Branch }}
 
       - run: git checkout . && git clean -f
       - run: cat /dev/null | sbt cachedCiTest
@@ -32,5 +32,5 @@ jobs:
             - ~/.sbt
             - ~/.cache/coursier
             - ./
-          key: v1-dependencies
+          key: v1-dependencies-{{ .Branch }}-{{ epoch }}
 
