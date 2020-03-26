@@ -22,28 +22,28 @@ jobs:
         with:
           path: ~/.ivy2/cache
           key: ${{ runner.os }}-sbt-ivy-cache-${{ github.run_number }}
-          restore-keys: ${{ runner.os }}-sbt-ivy-cache
+          restore-keys: ${{ runner.os }}-sbt-ivy-cache-
 
       - name: Cache SBT
         uses: actions/cache@v1.1.2
         with:
           path: ~/.sbt
           key: ${{ runner.os }}-sbt-${{ github.run_number }}
-          restore-keys: ${{ runner.os }}-sbt
+          restore-keys: ${{ runner.os }}-sbt-
 
       - name: Cache coursier cache
         uses: actions/cache@v1.1.2
         with:
           path: ~/.cache/coursier
           key: ${{ runner.os }}-coursier-${{ github.run_number }}
-          restore-keys: ${{ runner.os }}-coursier
+          restore-keys: ${{ runner.os }}-coursier-
 
       - name: Cache project
         uses: actions/cache@v1.1.2
         with:
           path: ./
           key: ${{ runner.os }}-project-${{ github.run_number }}
-          restore-keys: ${{ runner.os }}-project
+          restore-keys: ${{ runner.os }}-project-
 
       - name: Checkout current
         run: git checkout . && git clean -f
