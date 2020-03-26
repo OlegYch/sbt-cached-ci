@@ -1,5 +1,7 @@
 package org.olegych.sbt
 
+import java.time.Instant
+
 import sbt._
 import sbt.Keys._
 import sbt.plugins.JvmPlugin
@@ -27,14 +29,20 @@ object CachedCiPlugin extends AutoPlugin {
       val s = state.value
       val extracted = Project.extract(s)
       import extracted._
-      val thisProject = thisProjectRef.value
+      val thisProjectRef_ = thisProjectRef.value
+      val thisProject_ = thisProject.value
       val token = target.value / ".lastCachedCiTestFull"
-      val quick = token.exists() && token.lastModified() > (System.currentTimeMillis() - cachedCiTestFullPeriod.value.toMillis)
+      val lastRun = Instant.ofEpochMilli(token.lastModified())
+      s.log.info(s"Last ${thisProject_.id} / ${cachedCiTest.key.label} was at ${lastRun}")
+      val quick = token.exists() && lastRun.isAfter(Instant.now.minusMillis(cachedCiTestFullPeriod.value.toMillis))
       if (quick) {
-        runTask(thisProject / cachedCiTestQuick, s)
+        s.log.info(s"Running ${thisProject_.id} / ${cachedCiTestQuick.key.label}")
+        runTask(thisProjectRef_ / cachedCiTestQuick, s)
       } else {
-        runTask(thisProject / clean, s)
-        runTask(thisProject / cachedCiTestFull, s)
+        s.log.info(s"Running ${thisProject_.id} / ${clean.key.label}")
+        runTask(thisProjectRef_ / clean, s)
+        s.log.info(s"Running ${thisProject_.id} / ${cachedCiTestFull.key.label}")
+        runTask(thisProjectRef_ / cachedCiTestFull, s)
         token.delete()
         token.createNewFile()
       }

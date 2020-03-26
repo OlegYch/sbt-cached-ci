@@ -11,4 +11,4 @@ scriptedBufferLog := false
 pluginCrossBuild / sbtVersion := "1.2.8" //https://github.com/sbt/sbt/issues/5049
 
 Test / test := scripted.toTask("").value
-cachedCiTestQuick := Def.sequential(state.map(_.log.info("Running quick test")), cachedCiTestFull).value
+cachedCiTestQuick := cachedCiTestFull.value
