@@ -1,5 +1,5 @@
 > cachedCiTest
-# B is executed with some delay so it has to be newer than A
+# B test depends on A test so it has to be newer than A
 $ exists a/target/A.result
 $ exists b/target/B.result
 $ newer b/target/B.result a/target/A.result
