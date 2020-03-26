@@ -16,7 +16,7 @@ object CachedCiPlugin extends AutoPlugin {
     lazy val cachedCiTestFull = taskKey[Unit]("Full test.")
     lazy val cachedCiTestFullPeriod = settingKey[FiniteDuration]("Period between full tests.")
     lazy val cachedCiTestQuick = taskKey[Unit]("Quick test.")
-    lazy val cachedCiTest = taskKey[Unit]("Runs clean and full test if last full test was longer than cachedCiTestFullPeriod ago, otherwise runs quick test.")
+    lazy val cachedCiTest = taskKey[Unit]("Runs clean and full test if last full test was more than cachedCiTestFullPeriod ago, otherwise runs quick test.")
   }
 
   import autoImport._
