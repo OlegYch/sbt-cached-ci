@@ -21,8 +21,8 @@ jobs:
         uses: actions/cache@v1.1.2
         with:
           path: ~/.ivy2/cache
-          key: ${{ runner.os }}-sbt-ivy-cache-${{ github.run_number }}
-          restore-keys: ${{ runner.os }}-sbt-ivy-cache-
+          key: ${{ runner.os }}-ivy-${{ github.run_number }}
+          restore-keys: ${{ runner.os }}-ivy-
 
       - name: Cache SBT
         uses: actions/cache@v1.1.2
