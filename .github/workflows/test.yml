@@ -56,3 +56,4 @@ jobs:
           find ~/.sbt        -name "*.lock"               -print -delete
           rm -rf ./.git
           rm -rf ./project/target #clean doesn't clean meta-build
+
