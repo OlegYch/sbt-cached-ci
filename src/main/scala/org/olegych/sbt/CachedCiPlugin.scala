@@ -31,7 +31,7 @@ object CachedCiPlugin extends AutoPlugin {
       import extracted._
       val thisProjectRef_ = thisProjectRef.value
       val thisProject_ = thisProject.value
-      val token = target.value / ".lastCachedCiTestFull"
+      val token = crossTarget.value / ".lastCachedCiTestFull"
       val lastRun = Instant.ofEpochMilli(token.lastModified())
       s.log.info(s"Last ${thisProject_.id} / ${cachedCiTest.key.label} was at ${lastRun}")
       val quick = token.exists() && lastRun.isAfter(Instant.now.minusMillis(cachedCiTestFullPeriod.value.toMillis))

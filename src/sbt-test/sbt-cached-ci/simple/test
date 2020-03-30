@@ -7,7 +7,7 @@ $ delete a/target/A.result
 > cachedCiTest
 # nothing was executed
 $ absent a/target/A.result
-$ delete a/target/.lastCachedCiTestFull
+$ delete a/target/scala-2.13/.lastCachedCiTestFull
 > cachedCiTest
 # A was executed but B remained old
 $ exists a/target/A.result
