@@ -12,3 +12,5 @@ pluginCrossBuild / sbtVersion := "1.2.8" //https://github.com/sbt/sbt/issues/504
 
 Test / test := scripted.toTask("").value
 cachedCiTestQuick := cachedCiTestFull.value
+
+Global / onChangedBuildSource := ReloadOnSourceChanges

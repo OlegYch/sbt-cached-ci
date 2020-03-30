@@ -21,30 +21,40 @@ object CachedCiPlugin extends AutoPlugin {
 
   import autoImport._
 
+  private case class Token(path: File) {
+    path.getParentFile.mkdirs()
+    val lastModified = Instant.ofEpochMilli(path.lastModified())
+    def valid(period: FiniteDuration) = path.exists() && lastModified.isAfter(Instant.now.minusMillis(period.toMillis))
+    def refresh() = {
+      path.delete()
+      path.createNewFile()
+    }
+  }
   override lazy val projectSettings = Seq(
     cachedCiTestFull := (Test / test).value,
     cachedCiTestQuick := (Test / testQuick).toTask("").value,
     cachedCiTestFullPeriod := 24.hours,
+    cachedCiTest / aggregate := false,
     cachedCiTest := {
       val s = state.value
       val extracted = Project.extract(s)
       import extracted._
-      val thisProjectRef_ = thisProjectRef.value
-      val thisProject_ = thisProject.value
-      val token = crossTarget.value / ".lastCachedCiTestFull"
-      val lastRun = Instant.ofEpochMilli(token.lastModified())
-      s.log.info(s"Last ${thisProject_.id} / ${cachedCiTest.key.label} was at ${lastRun}")
-      val quick = token.exists() && lastRun.isAfter(Instant.now.minusMillis(cachedCiTestFullPeriod.value.toMillis))
-      if (quick) {
-        s.log.info(s"Running ${thisProject_.id} / ${cachedCiTestQuick.key.label}")
-        runTask(thisProjectRef_ / cachedCiTestQuick, s)
+      def run(t: TaskKey[_]) = {
+        s.log.info(s"Running ${thisProjectRef.value.project} / ${t.key.label}")
+        runAggregated(thisProjectRef.value / t, s)
+      }
+      val testFullToken = Token((if (crossPaths.value) crossTarget.value else target.value) / ".lastCachedCiTestFull")
+      s.log.info(s"Last ${cachedCiTest.key.label} was at ${testFullToken.lastModified}")
+      if (testFullToken.valid(cachedCiTestFullPeriod.value)) {
+        run(cachedCiTestQuick)
       } else {
-        s.log.info(s"Running ${thisProject_.id} / ${clean.key.label}")
-        runTask(thisProjectRef_ / clean, s)
-        s.log.info(s"Running ${thisProject_.id} / ${cachedCiTestFull.key.label}")
-        runTask(thisProjectRef_ / cachedCiTestFull, s)
-        token.delete()
-        token.createNewFile()
+        val cleanToken = Token(target.value / ".lastCachedCiTestClean")
+        if (!cleanToken.valid(cachedCiTestFullPeriod.value)) {
+          run(clean)
+          cleanToken.refresh()
+        }
+        run(cachedCiTestFull)
+        testFullToken.refresh()
       }
     }
   )

@@ -1,15 +1,28 @@
-> cachedCiTest
+> +cachedCiTest
 # B test depends on A test so it has to be newer than A
-$ exists a/target/A.result
-$ exists b/target/B.result
-$ newer b/target/B.result a/target/A.result
-$ delete a/target/A.result
-> cachedCiTest
+$ exists a/target/scala-2.13/A.result
+$ exists b/target/scala-2.13/B.result
+$ newer b/target/scala-2.13/B.result a/target/scala-2.13/A.result
+$ delete a/target/scala-2.12/A.result
+$ delete a/target/scala-2.13/A.result
+> +cachedCiTest
 # nothing was executed
-$ absent a/target/A.result
-$ delete a/target/scala-2.13/.lastCachedCiTestFull
-> cachedCiTest
-# A was executed but B remained old
-$ exists a/target/A.result
-$ exists b/target/B.result
-$ newer a/target/A.result b/target/B.result
+$ absent a/target/scala-2.12/A.result
+$ absent a/target/scala-2.13/A.result
+$ delete a/target/scala-2.13/
+> +cachedCiTest
+# only A 2.13 was executed
+$ absent a/target/scala-2.12/A.result
+$ exists a/target/scala-2.13/A.result
+$ exists b/target/scala-2.13/B.result
+$ newer a/target/scala-2.13/A.result b/target/scala-2.13/B.result
+> clean
+$ absent a/target/scala-2.12/A.result
+$ absent a/target/scala-2.13/A.result
+$ absent b/target/scala-2.12/B.result
+$ absent b/target/scala-2.13/B.result
+> +cachedCiTest
+$ exists a/target/scala-2.12/A.result
+$ exists a/target/scala-2.13/A.result
+$ exists b/target/scala-2.12/B.result
+$ exists b/target/scala-2.13/B.result

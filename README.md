@@ -17,8 +17,11 @@ Supported sbt version - 1.x.
     ```
     addSbtPlugin("org.olegych" %% "sbt-cached-ci" % latest_version)
     ```
-1. Configure your CI to cache current directory and call `cachedCiTest` task, see samples at [.travis.yml](.travis.yml), [.github/workflows/test.yml](.github/workflows/test.yml) or [.circleci/config.yml](.circleci/config.yml) 
+1. Configure your CI to cache current directory (preserving full timestamp) and call `cachedCiTest` task, see samples at [.travis.yml](.travis.yml), [.github/workflows/test.yml](.github/workflows/test.yml) or [.circleci/config.yml](.circleci/config.yml) 
  
+Note that Github support relies on forked cache action (pending [https://github.com/actions/cache/pull/233](https://github.com/actions/cache/pull/233)).
+
+CircleCI currently does not support proper caching, please vote here [https://ideas.circleci.com](https://ideas.circleci.com). 
 
 Period between full test runs can be configured with `cachedCiTestFullPeriod` setting.
 
