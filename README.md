@@ -21,7 +21,7 @@ Supported sbt version - 1.x.
  
 Note that Github support relies on forked cache action (pending [https://github.com/actions/cache/pull/233](https://github.com/actions/cache/pull/233)).
 
-CircleCI currently does not support proper caching, please vote here [https://ideas.circleci.com](https://ideas.circleci.com). 
+CircleCI currently does not support proper caching, please vote here [https://ideas.circleci.com/ideas/CCI-I-1453](https://ideas.circleci.com/ideas/CCI-I-1453). 
 
 Period between full test runs can be configured with `cachedCiTestFullPeriod` setting.
 
