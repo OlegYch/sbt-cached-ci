@@ -40,9 +40,13 @@ object CachedCiPlugin extends AutoPlugin {
       val extracted = Project.extract(s)
       import extracted._
       def run(t: TaskKey[_]) = {
-        s.log.info(s"Running ${thisProjectRef.value.project} / ${t.key.label}")
-        runAggregated(thisProjectRef.value / t, s)
+        val label = s"${thisProjectRef.value.project} / ${t.key.label}"
+        s.log.info(s"Running $label")
+        val failed = Some(Exec(s"$label failed", None))
+        val newState = runAggregated(thisProjectRef.value / t, s.copy(onFailure = failed))
+        if (newState.remainingCommands.headOption == failed) throw new MessageOnlyException(s"$label failed")
       }
+
       val testFullToken = Token((if (crossPaths.value) crossTarget.value else target.value) / ".lastCachedCiTestFull")
       s.log.info(s"Last ${cachedCiTest.key.label} was at ${testFullToken.lastModified}")
       if (testFullToken.valid(cachedCiTestFullPeriod.value)) {
