@@ -2,8 +2,9 @@ package org.olegych.sbt
 
 import java.time.Instant
 
-import sbt._
 import sbt.Keys._
+import sbt.Tags.Tag
+import sbt._
 import sbt.plugins.JvmPlugin
 
 import scala.concurrent.duration._
@@ -30,25 +31,24 @@ object CachedCiPlugin extends AutoPlugin {
       path.createNewFile()
     }
   }
+  val CachedCiTest = Tag("CachedCiTest")
   override lazy val projectSettings = Seq(
     cachedCiTestFull := (Test / test).value,
     cachedCiTestQuick := (Test / testQuick).toTask("").value,
     cachedCiTestFullPeriod := 24.hours,
-    cachedCiTest / aggregate := false,
-    cachedCiTest := {
+    concurrentRestrictions += Tags.exclusive(CachedCiTest),
+    cachedCiTest := Def.task {
       val s = state.value
       val extracted = Project.extract(s)
       import extracted._
-      def run(t: TaskKey[_]) = {
+      def run(t: TaskKey[_]): Unit = {
         val label = s"${thisProjectRef.value.project} / ${t.key.label}"
         s.log.info(s"Running $label")
-        val failed = Some(Exec(s"$label failed", None))
-        val newState = runAggregated(thisProjectRef.value / t, s.copy(onFailure = failed))
-        if (newState.remainingCommands.headOption == failed) throw new MessageOnlyException(s"$label failed")
+        runTask(thisProjectRef.value / t, s)
       }
 
       val testFullToken = Token((if (crossPaths.value) crossTarget.value else target.value) / ".lastCachedCiTestFull")
-      s.log.info(s"Last ${cachedCiTest.key.label} was at ${testFullToken.lastModified}")
+      s.log.info(s"Last ${thisProjectRef.value.project} / ${cachedCiTest.key.label} was at ${testFullToken.lastModified}")
       if (testFullToken.valid(cachedCiTestFullPeriod.value)) {
         run(cachedCiTestQuick)
       } else {
@@ -60,6 +60,6 @@ object CachedCiPlugin extends AutoPlugin {
         run(cachedCiTestFull)
         testFullToken.refresh()
       }
-    }
+    }.tag(CachedCiTest).value
   )
 }
