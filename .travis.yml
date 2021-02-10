@@ -8,7 +8,7 @@ env:
 
 script:
   - git checkout .
-  - git clean -f
+  - git clean -df
   - sbt cachedCiTest
 
 before_cache:

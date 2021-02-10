@@ -46,7 +46,7 @@ jobs:
           restore-keys: ${{ runner.os }}-project-
 
       - name: Checkout current
-        run: git checkout . && git clean -f
+        run: git checkout . && git clean -df
       - name: Run tests
         run: sbt cachedCiTest
       - name: Clean caches

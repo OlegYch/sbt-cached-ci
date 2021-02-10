@@ -17,7 +17,7 @@ jobs:
           keys:
             - v1-dependencies-{{ .Branch }}
 
-      - run: git checkout . && git clean -f
+      - run: git checkout . && git clean -df
       - run: cat /dev/null | sbt cachedCiTest
       - run: |
           rm -fv ~/.ivy2/.sbt.ivy.lock
