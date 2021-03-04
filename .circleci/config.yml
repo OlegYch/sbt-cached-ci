@@ -21,7 +21,7 @@ jobs:
       - run: cat /dev/null | sbt cachedCiTest
       - run: |
           rm -fv ~/.ivy2/.sbt.ivy.lock
-          find ~/.ivy2/cache -name "ivydata-*.properties" -print -delete
+          find ~/.ivy2/cache -name "ivydata-*.properties" -print -delete || echo "empty ivy cache"
           find ~/.sbt        -name "*.lock"               -print -delete
           rm -rf ./.git
           rm -rf ./project/target #clean doesn't clean meta-build
