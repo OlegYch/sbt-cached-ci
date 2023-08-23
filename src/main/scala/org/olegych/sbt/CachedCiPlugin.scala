@@ -23,10 +23,10 @@ object CachedCiPlugin extends AutoPlugin {
   import autoImport._
 
   private case class Token(path: File) {
-    path.getParentFile.mkdirs()
     val lastModified = Instant.ofEpochMilli(path.lastModified())
     def valid(period: FiniteDuration) = path.exists() && lastModified.isAfter(Instant.now.minusMillis(period.toMillis))
     def refresh() = {
+      path.getParentFile.mkdirs()
       path.delete()
       path.createNewFile()
     }
