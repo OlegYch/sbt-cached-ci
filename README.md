@@ -15,7 +15,7 @@ Supported sbt version - 1.x.
 
 1. In `./project/plugins.sbt` add:
     ```
-    addSbtPlugin("org.olegych" %% "sbt-cached-ci" % latest_version)
+    addSbtPlugin("io.github.olegych" %% "sbt-cached-ci" % latest_version)
     ```
 1. Configure your CI to cache current directory (preserving full timestamp) and call `cachedCiTest` task, see samples at [.travis.yml](.travis.yml), [.github/workflows/test.yml](.github/workflows/test.yml) or [.circleci/config.yml](.circleci/config.yml) 
  

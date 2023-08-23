@@ -1,9 +1,5 @@
 enablePlugins(SbtPlugin)
 name := """sbt-cached-ci"""
-organization := "org.olegych"
-
-bintrayPackageLabels := Seq("sbt", "plugin")
-bintrayVcsUrl := Some("""git@github.com:olegych/sbt-cached-ci.git""")
 
 scriptedLaunchOpts ++= Seq("-Xmx1024M", "-Dplugin.version=" + version.value)
 

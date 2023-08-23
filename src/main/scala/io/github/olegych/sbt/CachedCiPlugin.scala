@@ -1,4 +1,4 @@
-package org.olegych.sbt
+package io.github.olegych.sbt
 
 import java.time.Instant
 
