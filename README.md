@@ -1,7 +1,7 @@
 ![Github Build Status](https://github.com/OlegYch/sbt-cached-ci/workflows/Continuous%20Integration/badge.svg)
 [![Travis Build Status](https://travis-ci.com/OlegYch/sbt-cached-ci.svg?branch=master)](https://travis-ci.com/OlegYch/sbt-cached-ci)
 [![CircleCI Build Status](https://circleci.com/gh/OlegYch/sbt-cached-ci.svg?style=svg)](https://circleci.com/gh/OlegYch/sbt-cached-ci)
-[ ![Latest Version](https://api.bintray.com/packages/olegych/sbt-plugins/sbt-cached-ci/images/download.svg) ](https://bintray.com/olegych/sbt-plugins/sbt-cached-ci/_latestVersion)
+[![sbt-cached-ci Latest Version](https://index.scala-lang.org/olegych/sbt-cached-ci/sbt-cached-ci/latest.svg)](https://index.scala-lang.org/olegych/sbt-cached-ci/sbt-cached-ci)
 
 # sbt-cached-ci
 
