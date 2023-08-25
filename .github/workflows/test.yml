@@ -18,28 +18,28 @@ jobs:
           java-version: 1.8
 
       - name: Cache SBT ivy cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.ivy2/cache
           key: ${{ runner.os }}-ivy-${{ github.run_number }}
           restore-keys: ${{ runner.os }}-ivy-
 
       - name: Cache SBT
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.sbt
           key: ${{ runner.os }}-sbt-${{ github.run_number }}
           restore-keys: ${{ runner.os }}-sbt-
 
       - name: Cache coursier cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.cache/coursier
           key: ${{ runner.os }}-coursier-${{ github.run_number }}
           restore-keys: ${{ runner.os }}-coursier-
 
       - name: Cache project
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ./
           key: ${{ runner.os }}-project-${{ github.run_number }}
