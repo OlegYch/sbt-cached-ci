@@ -5,6 +5,7 @@ scriptedLaunchOpts ++= Seq("-Xmx1024M", "-Dplugin.version=" + version.value)
 
 scriptedBufferLog := false
 pluginCrossBuild / sbtVersion := "1.2.8" //https://github.com/sbt/sbt/issues/5049
+scalacOptions := Seq("-target:jvm-1.8")
 
 Test / test := scripted.toTask("").value
 cachedCiTestQuick := cachedCiTestFull.value
