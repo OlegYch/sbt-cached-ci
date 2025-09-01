@@ -10,3 +10,4 @@ project/target
 .project
 .settings
 bin
+.bsp

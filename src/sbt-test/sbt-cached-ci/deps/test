@@ -1,0 +1,6 @@
+> cachedCiTest
+$ exists target/scala-2.13
+> set cachedCiTestFull := Def.task {sys.error("failing test")}.value
+> cachedCiTest
+> set addDep := true
+-> cachedCiTest
