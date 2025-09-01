@@ -1,3 +1,6 @@
+import xerial.sbt.Sonatype.sonatypeCentralHost
+ThisBuild / sonatypeCredentialHost := sonatypeCentralHost
+sbtPluginPublishLegacyMavenStyle := false
 ThisBuild / organization := "io.github.olegych"
 ThisBuild / organizationName := "OlegYch"
 ThisBuild / organizationHomepage := Some(url("https://github.com/OlegYch"))
@@ -25,7 +28,6 @@ ThisBuild / homepage := Some(url("https://github.com/OlegYch/sbt-cached-ci"))
 ThisBuild / pomIncludeRepository := { _ => false }
 ThisBuild / publishMavenStyle := true
 ThisBuild / publishTo := sonatypePublishToBundle.value
-ThisBuild / sonatypeCredentialHost := "s01.oss.sonatype.org"
 ThisBuild / sonatypeProfileName := "OlegYch"
 
 import ReleaseTransformations._
