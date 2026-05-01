@@ -1,3 +1,6 @@
+credentials += Credentials(Path.userHome / ".sbt" / "sonatype_central_credentials")
+useIvy := false
+releaseUseGlobalVersion := false
 sbtPluginPublishLegacyMavenStyle := false
 organization := "io.github.olegych"
 organizationName := "OlegYch"
