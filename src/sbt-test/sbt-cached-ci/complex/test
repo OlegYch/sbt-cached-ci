@@ -1,28 +1,30 @@
 > +cachedCiTest
+> +b/clean
+> +b/cachedCiTest
 # B test depends on A test so it has to be newer than A
-$ exists a/target/scala-2.13/A.result
-$ exists b/target/scala-2.13/B.result
-$ newer b/target/scala-2.13/B.result a/target/scala-2.13/A.result
-$ delete a/target/scala-2.12/A.result
-$ delete a/target/scala-2.13/A.result
+$ exists target/out/jvm/scala-2.13.16/a/A.result
+$ exists target/out/jvm/scala-2.13.16/b/B.result
+$ newer target/out/jvm/scala-2.13.16/b/B.result target/out/jvm/scala-2.13.16/a/A.result
+$ delete target/out/jvm/scala-2.12.20/a/A.result
+$ delete target/out/jvm/scala-2.13.16/a/A.result
 > +cachedCiTest
 # nothing was executed
-$ absent a/target/scala-2.12/A.result
-$ absent a/target/scala-2.13/A.result
-$ delete a/target/scala-2.13/
+$ absent target/out/jvm/scala-2.12.20/a/A.result
+$ absent target/out/jvm/scala-2.13.16/a/A.result
+$ delete target/out/jvm/scala-2.13.16/a/
 > +cachedCiTest
 # only A 2.13 was executed
-$ absent a/target/scala-2.12/A.result
-$ exists a/target/scala-2.13/A.result
-$ exists b/target/scala-2.13/B.result
-$ newer a/target/scala-2.13/A.result b/target/scala-2.13/B.result
-> clean
-$ absent a/target/scala-2.12/A.result
-$ absent a/target/scala-2.13/A.result
-$ absent b/target/scala-2.12/B.result
-$ absent b/target/scala-2.13/B.result
+$ absent target/out/jvm/scala-2.12.20/a/A.result
+$ exists target/out/jvm/scala-2.13.16/a/A.result
+$ exists target/out/jvm/scala-2.13.16/b/B.result
+$ newer target/out/jvm/scala-2.13.16/a/A.result target/out/jvm/scala-2.13.16/b/B.result
+> +clean
+$ absent target/out/jvm/scala-2.12.20/a/A.result
+$ absent target/out/jvm/scala-2.13.16/a/A.result
+$ absent target/out/jvm/scala-2.12.20/b/B.result
+$ absent target/out/jvm/scala-2.13.16/b/B.result
 > +cachedCiTest
-$ exists a/target/scala-2.12/A.result
-$ exists a/target/scala-2.13/A.result
-$ exists b/target/scala-2.12/B.result
-$ exists b/target/scala-2.13/B.result
+$ exists target/out/jvm/scala-2.12.20/a/A.result
+$ exists target/out/jvm/scala-2.13.16/a/A.result
+$ exists target/out/jvm/scala-2.12.20/b/B.result
+$ exists target/out/jvm/scala-2.13.16/b/B.result

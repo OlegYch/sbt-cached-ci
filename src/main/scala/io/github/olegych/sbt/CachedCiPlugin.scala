@@ -15,9 +15,12 @@ object CachedCiPlugin extends AutoPlugin {
   override def requires = JvmPlugin
 
   object autoImport {
+    @transient
     lazy val cachedCiTestFull = taskKey[Unit]("Full test.")
+    @transient
     lazy val cachedCiTestFullToken = taskKey[String]("Run full tests if this changed.")
     lazy val cachedCiTestFullPeriod = settingKey[FiniteDuration]("Period between full tests.")
+    @transient
     lazy val cachedCiTestQuick = taskKey[Unit]("Quick test.")
     lazy val cachedCiTest = taskKey[Unit]("Runs clean and full test if last full test was more than cachedCiTestFullPeriod ago, otherwise runs quick test.")
   }
@@ -42,16 +45,16 @@ object CachedCiPlugin extends AutoPlugin {
 
   val CachedCiTest = Tag("CachedCiTest")
   override lazy val projectSettings = Seq(
-    cachedCiTestFull := (Test / test).value,
-    cachedCiTestQuick := (Test / testQuick).toTask("").value,
-    cachedCiTestFullToken := (Runtime / fullClasspath).value.mkString,
+    cachedCiTestFull := (Test / testFull).value,
+    cachedCiTestQuick := (Test / test).toTask("").value,
+    cachedCiTestFullToken := (Runtime / fullClasspath).value.map(_.data.id).mkString,
     cachedCiTestFullPeriod := 24.hours,
     concurrentRestrictions += Tags.exclusive(CachedCiTest),
     cachedCiTest := Def.task {
       val s = state.value
       val extracted = Project.extract(s)
       import extracted._
-      def run(t: TaskKey[_]): Unit = {
+      def run(t: TaskKey[?]): Unit = {
         val label = s"${thisProjectRef.value.project} / ${t.key.label}"
         s.log.info(s"Running $label")
         runTask(thisProjectRef.value / t, s)

@@ -7,11 +7,11 @@
 
 Incremental sbt builds for CI environments.
 
-The plugin introduces a new task `cachedCiTest` which calls `testQuick` and calls `clean` once a day. 
+The plugin introduces a new task `cachedCiTest` which calls either `test` or `clean;testFull` depending on `cachedCiTestFullPeriod` setting. 
 
 ## Usage
 
-Supported sbt version - 1.x.
+Supported sbt version - 2.x.
 
 1. In `./project/plugins.sbt` add:
     ```

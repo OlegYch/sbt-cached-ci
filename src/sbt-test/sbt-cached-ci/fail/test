@@ -1,4 +1,4 @@
 -> cachedCiTest
 -> cachedCiTest
-$ touch target/scala-2.12/.lastCachedCiTestFull
+$ touch target/out/jvm/scala-2.12.20/root/.lastCachedCiTestFull
 > cachedCiTest

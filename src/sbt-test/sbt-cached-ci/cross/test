@@ -1,5 +1,3 @@
 > +cachedCiTest
-$ exists a/target/scala-2.12
-$ exists a/target/scala-2.13
-#$ exists a/target/jvm-2.12
-#$ exists a/target/jvm-2.13
+$ exists target/out/jvm/scala-2.12.20/a
+$ exists target/out/jvm/scala-2.13.16/a

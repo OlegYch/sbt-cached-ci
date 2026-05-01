@@ -1,37 +1,39 @@
-import xerial.sbt.Sonatype.sonatypeCentralHost
-ThisBuild / sonatypeCredentialHost := sonatypeCentralHost
 sbtPluginPublishLegacyMavenStyle := false
-ThisBuild / organization := "io.github.olegych"
-ThisBuild / organizationName := "OlegYch"
-ThisBuild / organizationHomepage := Some(url("https://github.com/OlegYch"))
+organization := "io.github.olegych"
+organizationName := "OlegYch"
+organizationHomepage := Some(url("https://github.com/OlegYch"))
 
-ThisBuild / scmInfo := Some(
+scmInfo := Some(
   ScmInfo(
     url("https://github.com/OlegYch/sbt-cached-ci"),
     "scm:git@github.com:OlegYch/sbt-cached-ci.git"
   )
 )
-ThisBuild / developers := List(
+developers := List(
   Developer(
     id    = "OlegYch",
     name  = "Aleh Aleshka",
-    email = "olegych@tut.by",
+    email = "oleglbch@gmail.com",
     url   = url("https://github.com/OlegYch")
   )
 )
 
-ThisBuild / description := "Incremental sbt builds for CI environments."
-ThisBuild / licenses := Seq("BSD-style" -> url("http://www.opensource.org/licenses/bsd-license.php"))
-ThisBuild / homepage := Some(url("https://github.com/OlegYch/sbt-cached-ci"))
+description := "Incremental sbt builds for CI environments."
+licenses := Seq("BSD-style" -> url("http://www.opensource.org/licenses/bsd-license.php"))
+homepage := Some(url("https://github.com/OlegYch/sbt-cached-ci"))
 
 // Remove all additional repository other than Maven Central from POM
-ThisBuild / pomIncludeRepository := { _ => false }
-ThisBuild / publishMavenStyle := true
-ThisBuild / publishTo := sonatypePublishToBundle.value
-ThisBuild / sonatypeProfileName := "OlegYch"
+pomIncludeRepository := { _ => false }
+publishMavenStyle := true
+
+publishTo := {
+  val centralSnapshots = "https://central.sonatype.com/repository/maven-snapshots/"
+  if (isSnapshot.value) Some("central-snapshots" at centralSnapshots)
+  else localStaging.value
+}
 
 import ReleaseTransformations._
-ThisBuild / versionScheme := Some("early-semver")
+versionScheme := Some("early-semver")
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
   inquireVersions,

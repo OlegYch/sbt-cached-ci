@@ -1,13 +1,14 @@
 enablePlugins(SbtPlugin)
 name := """sbt-cached-ci"""
 
+val javaVersion = scala.util.Properties.javaVersion.toInt
 scriptedLaunchOpts ++= Seq("-Xmx1024M", "-Dplugin.version=" + version.value)
+scriptedLaunchOpts ++= (if (javaVersion >=24) Seq("--enable-native-access=ALL-UNNAMED", "--sun-misc-unsafe-memory-access=allow") else Nil)
 
 scriptedBufferLog := false
-pluginCrossBuild / sbtVersion := "1.2.8" //https://github.com/sbt/sbt/issues/5049
-scalacOptions := Seq("-target:jvm-1.8")
+pluginCrossBuild / sbtVersion := "2.0.0-RC12" //https://github.com/sbt/sbt/issues/5049
+scalacOptions := Seq("-release:17")
 
-Test / test := scripted.toTask("").value
+cachedCiTestFull := scripted.toTask("").value
 cachedCiTestQuick := cachedCiTestFull.value
 
-Global / onChangedBuildSource := ReloadOnSourceChanges
