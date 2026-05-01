@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: cimg/openjdk:20.0.1
+      - image: cimg/openjdk:25.0.1
 
     working_directory: ~/repo
 
@@ -18,7 +18,7 @@ jobs:
             - v1-dependencies-{{ .Branch }}
 
       - run: git checkout . && git clean -df
-      - run: cat /dev/null | sbt cachedCiTest
+      - run: cat /dev/null | sbt --no-server cachedCiTest
       - run: |
           rm -fv ~/.ivy2/.sbt.ivy.lock
           find ~/.ivy2/cache -name "ivydata-*.properties" -print -delete || echo "empty ivy cache"

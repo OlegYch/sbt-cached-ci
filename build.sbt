@@ -1,9 +1,7 @@
 enablePlugins(SbtPlugin)
 name := """sbt-cached-ci"""
 
-val javaVersion = scala.util.Properties.javaVersion.toInt
-scriptedLaunchOpts ++= Seq("-Xmx1024M", "-Dplugin.version=" + version.value)
-scriptedLaunchOpts ++= (if (javaVersion >= 25) Seq("--enable-native-access=ALL-UNNAMED", "--sun-misc-unsafe-memory-access=allow") else Nil)
+scriptedLaunchOpts ++= Seq("-Xmx1024M", "-Dplugin.version=" + version.value, "--enable-native-access=ALL-UNNAMED", "--sun-misc-unsafe-memory-access=allow")
 
 scriptedBufferLog := false
 pluginCrossBuild / sbtVersion := "2.0.0-RC12" //https://github.com/sbt/sbt/issues/5049
