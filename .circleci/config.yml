@@ -20,15 +20,12 @@ jobs:
       - run: git checkout . && git clean -df
       - run: cat /dev/null | sbt --server cachedCiTest
       - run: |
-          rm -fv ~/.ivy2/.sbt.ivy.lock
-          find ~/.ivy2/cache -name "ivydata-*.properties" -print -delete || echo "empty ivy cache"
           find ~/.sbt        -name "*.lock"               -print -delete
           rm -rf ./.git
           rm -rf ./project/target #clean doesn't clean meta-build
 
       - save_cache:
           paths:
-            - ~/.ivy2/cache
             - ~/.sbt
             - ~/.cache/coursier
             - ./

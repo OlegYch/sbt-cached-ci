@@ -21,26 +21,21 @@ jobs:
       - name: Set up SBT
         uses: sbt/setup-sbt@v1
 
-      - name: Cache SBT ivy cache
-        uses: actions/cache@v5
-        with:
-          path: ~/.ivy2/cache
-          key: ${{ runner.os }}-ivy-${{ github.run_number }}
-          restore-keys: ${{ runner.os }}-ivy-
-
       - name: Cache SBT
         uses: actions/cache@v5
         with:
           path: ~/.sbt
-          key: ${{ runner.os }}-sbt-${{ github.run_number }}
+          key: ${{ runner.os }}-sbt-${{ hashFiles('project/build.properties') }}
           restore-keys: ${{ runner.os }}-sbt-
 
       - name: Cache coursier cache
         uses: actions/cache@v5
         with:
           path: ~/.cache/coursier
-          key: ${{ runner.os }}-coursier-${{ github.run_number }}
-          restore-keys: ${{ runner.os }}-coursier-
+          key: ${{ runner.os }}-coursier-${{ hashFiles('project/*') }}-${{ hashFiles('*.sbt') }}
+          restore-keys: | 
+            ${{ runner.os }}-coursier-${{ hashFiles('project/*') }}
+            ${{ runner.os }}-coursier-
 
       - name: Cache project
         uses: actions/cache@v5
@@ -51,12 +46,12 @@ jobs:
 
       - name: Checkout current
         run: git checkout . && git clean -df
+
       - name: Run tests
         run: sbt --server cachedCiTest
+
       - name: Clean caches
         run: |
-          rm -fv ~/.ivy2/.sbt.ivy.lock
-          find ~/.ivy2/cache -name "ivydata-*.properties" -print -delete || echo "empty ivy cache"
           find ~/.sbt        -name "*.lock"               -print -delete
           rm -rf ./.git
           rm -rf ./project/target #clean doesn't clean meta-build
