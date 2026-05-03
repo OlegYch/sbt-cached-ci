@@ -52,7 +52,7 @@ jobs:
       - name: Checkout current
         run: git checkout . && git clean -df
       - name: Run tests
-        run: sbt --no-server cachedCiTest
+        run: sbt --server cachedCiTest
       - name: Clean caches
         run: |
           rm -fv ~/.ivy2/.sbt.ivy.lock
