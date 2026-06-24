@@ -1,3 +1,7 @@
+lazy val root = project.in(file(".")).autoAggregate.settings(Seq(
+  scalaVersion := "3.8.4",
+  publish / skip := true,
+))
 lazy val plugin = (projectMatrix in file("plugin"))
   .enablePlugins(SbtPlugin)
   .settings(
