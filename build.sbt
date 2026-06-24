@@ -6,7 +6,9 @@ lazy val plugin = (projectMatrix in file("plugin"))
   .enablePlugins(SbtPlugin)
   .settings(
     name := """sbt-cached-ci""",
-    scriptedLaunchOpts ++= Seq("-Xmx1024M", "-Dplugin.version=" + version.value, "--enable-native-access=ALL-UNNAMED", "--sun-misc-unsafe-memory-access=allow"),
+    scriptedLaunchOpts ++= Seq("-Xmx512M", "-Dplugin.version=" + version.value, "--enable-native-access=ALL-UNNAMED", "--sun-misc-unsafe-memory-access=allow"),
+    scriptedParallelInstances := 2,
+    scriptedBatchExecution := true,
     scriptedBufferLog := false,
     // force lowest possible java target
     scalacOptions := Seq(if (scalaBinaryVersion.value.startsWith("3")) "-release:17" else "-target:jvm-1.8"),
