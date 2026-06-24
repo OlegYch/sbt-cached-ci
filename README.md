@@ -7,11 +7,11 @@
 
 Incremental sbt builds for CI environments.
 
-The plugin introduces a new task `cachedCiTest` which calls either `test` or `clean;testFull` depending on `cachedCiTestFullPeriod` setting. 
+The plugin introduces a new task `cachedCiTest` which calls either `testQuick` or `clean;testFull` depending on `cachedCiTestFullPeriod` setting. 
 
 ## Usage
 
-Supported sbt version - 2.x.
+Supported sbt versions - 1.5.8+, 2.x.
 
 1. In `./project/plugins.sbt` add:
     ```
@@ -24,3 +24,5 @@ Period between full test runs can be configured with `cachedCiTestFullPeriod` se
 `cachedCiTestQuick` configures what is executed on every build.
 
 `cachedCiTestFull` configures what is executed every `cachedCiTestFullPeriod`.
+
+If your subprojects use `crossScalaVersions`, enable aggregation like `cachedCiTest / aggregate := true`, or better yet - migrate to https://github.com/sbt/sbt-projectmatrix
