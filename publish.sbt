@@ -1,5 +1,9 @@
 credentials += Credentials(Path.userHome / ".sbt" / "sonatype_central_credentials")
-//useIvy := false
+// todo if ivy is disabled publishLocal for plugin2_12 omits cross suffixes, disable only on release or fix in sbt
+useIvy := false
+//commands += Command("disableIvy")(BasicCommands.otherCommandParser) {case (state, _) =>
+//  state.appendWithSession(Seq(useIvy := false))
+//}
 releaseUseGlobalVersion := false
 sbtPluginPublishLegacyMavenStyle := false
 organization := "io.github.olegych"
@@ -40,14 +44,16 @@ versionScheme := Some("early-semver")
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
   inquireVersions,
-  runClean,
-  runTest,
+//  runClean,
+//  runTest,
+//  releaseStepCommandAndRemaining("disableIvy"),
   setReleaseVersion,
-  commitReleaseVersion,
-  tagRelease,
-  releaseStepCommandAndRemaining("publishSigned"),
-  releaseStepCommand("sonaRelease"),
-  setNextVersion,
-  commitNextVersion,
-  pushChanges
+  releaseStepCommandAndRemaining("printVersion"),
+//  commitReleaseVersion,
+//  tagRelease,
+//  releaseStepCommandAndRemaining("publishSigned"),
+//  releaseStepCommand("sonaRelease"),
+//  setNextVersion,
+//  commitNextVersion,
+//  pushChanges
 )

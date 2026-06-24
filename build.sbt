@@ -1,6 +1,10 @@
 lazy val root = project.in(file(".")).autoAggregate.settings(Seq(
   scalaVersion := "3.8.4",
   publish / skip := true,
+  commands += Command("printVersion")(BasicCommands.otherCommandParser) {case (state, _) =>
+    plugin.projectRefs.foreach(p => println(state.getSetting(p / version)))
+    state
+  }
 ))
 lazy val plugin = (projectMatrix in file("plugin"))
   .enablePlugins(SbtPlugin)
