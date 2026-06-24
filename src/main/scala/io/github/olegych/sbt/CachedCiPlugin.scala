@@ -1,13 +1,14 @@
 package io.github.olegych.sbt
 
-import java.time.Instant
+import sbt.*
 import sbt.Keys.*
 import sbt.Tags.Tag
-import sbt.*
 import sbt.plugins.JvmPlugin
 
 import java.io.FileNotFoundException
+import java.time.Instant
 import scala.concurrent.duration.*
+import sbtcompat.PluginCompat.*
 
 object CachedCiPlugin extends AutoPlugin {
   override def trigger = allRequirements
@@ -25,7 +26,7 @@ object CachedCiPlugin extends AutoPlugin {
     lazy val cachedCiTest = taskKey[Unit]("Runs clean and full test if last full test was more than cachedCiTestFullPeriod ago, otherwise runs quick test.")
   }
 
-  import autoImport._
+  import autoImport.*
 
   private case class Token(path: File, value: String) {
     val lastModified = Instant.ofEpochMilli(path.lastModified())
@@ -44,16 +45,21 @@ object CachedCiPlugin extends AutoPlugin {
   }
 
   val CachedCiTest = Tag("CachedCiTest")
+  private val sbt2 = scala.util.Properties.versionNumberString.startsWith("3")
+  private val testFull: TaskKey[?] = (if (sbt2) TaskKey[TestResult]("testFull") else TaskKey[Unit]("test"))
   override lazy val projectSettings = Seq(
     cachedCiTestFull := (Test / testFull).value,
-    cachedCiTestQuick := (Test / test).toTask("").value,
-    cachedCiTestFullToken := (Runtime / fullClasspath).value.map(_.data.id).mkString,
+    cachedCiTestQuick := (Test / testQuick).toTask("").value,
+    cachedCiTestFullToken := {
+      implicit val conv: xsbti.FileConverter = fileConverter.value
+      (Runtime / fullClasspath).value.map(toFile).mkString
+    },
     cachedCiTestFullPeriod := 24.hours,
     concurrentRestrictions += Tags.exclusive(CachedCiTest),
     cachedCiTest := Def.task {
       val s = state.value
       val extracted = Project.extract(s)
-      import extracted._
+      import extracted.*
       def run(t: TaskKey[?]): Unit = {
         val label = s"${thisProjectRef.value.project} / ${t.key.label}"
         s.log.info(s"Running $label")
