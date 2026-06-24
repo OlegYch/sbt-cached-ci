@@ -12,6 +12,7 @@ lazy val plugin = (projectMatrix in file("plugin"))
     scalacOptions := Seq(if (scalaBinaryVersion.value.startsWith("3")) "-release:17" else "-target:jvm-1.8"),
     // test with latest sbt versions
     scriptedSbt := (if (scalaBinaryVersion.value.startsWith("3")) "2.0.0" else "1.12.13"),
+    sbtTestDirectory := sourceDirectory.value / (if (scalaBinaryVersion.value.startsWith("3")) "sbt2-test" else "sbt1-test"),
     addSbtPlugin("com.github.sbt" % "sbt2-compat" % "0.1.0"),
     cachedCiTestFull := scripted.toTask("").value,
     cachedCiTestQuick := cachedCiTestFull.value,
