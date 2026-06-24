@@ -55,15 +55,25 @@ object CachedCiPlugin extends AutoPlugin {
       (Runtime / fullClasspath).value.map(toFile).mkString
     },
     cachedCiTestFullPeriod := 24.hours,
-    concurrentRestrictions += Tags.exclusive(CachedCiTest),
+    // if the task is aggregated by sbt allow only one instance running to avoid issues with cross-versioned projects
+    // otherwise do the aggregation manually, allowing running cachedCiTest for independent projects in parallel
+    // if root project is not cross-built but there are any cross-built subprojects then `cachedCiTest / aggregate := true` should be set manually
+    cachedCiTest / aggregate := (crossScalaVersions.value.size > 1),
+    concurrentRestrictions ++= (if ((cachedCiTest / aggregate).value) List(Tags.exclusive(CachedCiTest)) else Nil),
     cachedCiTest := Def.task {
       val s = state.value
       val extracted = Project.extract(s)
+      val aggregated = (cachedCiTest / aggregate).value
       import extracted.*
       def run(t: TaskKey[?]): Unit = {
         val label = s"${thisProjectRef.value.project} / ${t.key.label}"
         s.log.info(s"Running $label")
-        runTask(thisProjectRef.value / t, s)
+        if (aggregated) runTask(thisProjectRef.value / t, s) else {
+          val failed = Some(Exec(s"$label failed", None))
+          val newState = runAggregated(thisProjectRef.value / t, s.copy(onFailure = failed))
+          if (newState.remainingCommands.headOption == failed) throw new MessageOnlyException(s"$label failed")
+          runAggregated(thisProjectRef.value / t, s)
+        }
       }
 
       val cachedCiTestFullTokenValue = cachedCiTestFullToken.value
