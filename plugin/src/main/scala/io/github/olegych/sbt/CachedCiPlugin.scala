@@ -72,7 +72,6 @@ object CachedCiPlugin extends AutoPlugin {
           val failed = Some(Exec(s"$label failed", None))
           val newState = runAggregated(thisProjectRef.value / t, s.copy(onFailure = failed))
           if (newState.remainingCommands.headOption == failed) throw new MessageOnlyException(s"$label failed")
-          runAggregated(thisProjectRef.value / t, s)
         }
       }
 
