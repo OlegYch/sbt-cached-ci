@@ -48,7 +48,7 @@ jobs:
         run: git checkout . && git clean -df
 
       - name: Run tests
-        run: sbt --server +cachedCiTest
+        run: sbt --server cachedCiTest
 
       - name: Clean caches
         run: |

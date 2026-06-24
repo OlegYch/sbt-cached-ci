@@ -4,11 +4,11 @@ import sbt.*
 import sbt.Keys.*
 import sbt.Tags.Tag
 import sbt.plugins.JvmPlugin
+import sbtcompat.PluginCompat.*
 
 import java.io.FileNotFoundException
 import java.time.Instant
 import scala.concurrent.duration.*
-import sbtcompat.PluginCompat.*
 
 object CachedCiPlugin extends AutoPlugin {
   override def trigger = allRequirements
