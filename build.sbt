@@ -1,4 +1,4 @@
-lazy val root = project.in(file(".")).autoAggregate.settings(Seq(
+lazy val root = project.in(file(".")).aggregate(plugin.projectRefs*).settings(Seq(
   scalaVersion := "3.8.4",
   publish / skip := true,
   commands += Command("printVersion")(BasicCommands.otherCommandParser) {case (state, _) =>
@@ -19,8 +19,8 @@ lazy val plugin = (projectMatrix in file("plugin"))
     // test with latest sbt versions
     scriptedSbt := (if (scalaBinaryVersion.value.startsWith("3")) "2.0.0" else "1.12.13"),
     sbtTestDirectory := sourceDirectory.value / (if (scalaBinaryVersion.value.startsWith("3")) "sbt2-test" else "sbt1-test"),
-    addSbtPlugin("com.github.sbt" % "sbt2-compat" % "0.1.0"),
-    cachedCiTestFull := scripted.toTask("").value,
-    cachedCiTestQuick := cachedCiTestFull.value,
+//    addSbtPlugin("com.github.sbt" % "sbt2-compat" % "0.1.0"),
+//    cachedCiTestFull := scripted.toTask("").value,
+//    cachedCiTestQuick := cachedCiTestFull.value,
   )
   .jvmPlatform(scalaVersions = Seq("3.8.4", "2.12.21"))

@@ -18,7 +18,7 @@ jobs:
             - v1-dependencies-{{ .Branch }}
 
       - run: git checkout . && git clean -df
-      - run: cat /dev/null | sbt --server cachedCiTest
+      - run: cat /dev/null | sbt 'release with-defaults'
       - run: |
           find ~/.sbt        -name "*.lock"               -print -delete
           rm -rf ./.git

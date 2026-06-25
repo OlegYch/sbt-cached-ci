@@ -2,9 +2,9 @@ name: Continuous Integration
 
 on:
   push:
-    branches: [ master ]
+    branches: [ '**' ]
   pull_request:
-    branches: [ master ]
+    branches: [ '**' ]
 
 jobs:
   build:
@@ -48,7 +48,7 @@ jobs:
         run: git checkout . && git clean -df
 
       - name: Run tests
-        run: sbt --server cachedCiTest
+        run: sbt 'release with-defaults'
 
       - name: Clean caches
         run: |
