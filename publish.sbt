@@ -14,10 +14,10 @@ scmInfo := Some(
 )
 developers := List(
   Developer(
-    id    = "OlegYch",
-    name  = "Aleh Aleshka",
+    id = "OlegYch",
+    name = "Aleh Aleshka",
     email = "oleglbch@gmail.com",
-    url   = url("https://github.com/OlegYch")
+    url = url("https://github.com/OlegYch")
   )
 )
 
@@ -36,14 +36,22 @@ publishTo := {
 }
 
 import ReleaseTransformations._
+
 versionScheme := Some("early-semver")
+releaseVersion := identity
+val cleanSonatype = ReleaseStep(action = { state =>
+  IO.delete(file("target/sona-bundle"))
+  IO.delete(file("target/sona-staging"))
+  state
+})
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
   inquireVersions,
+  cleanSonatype,
   runClean,
   runTest,
-  setReleaseVersion,
-  commitReleaseVersion,
+  //  setReleaseVersion,
+  //  commitReleaseVersion,
   tagRelease,
   releaseStepCommandAndRemaining("publishSigned"),
   releaseStepCommand("sonaRelease"),
