@@ -38,23 +38,22 @@ publishTo := {
 import ReleaseTransformations._
 
 versionScheme := Some("early-semver")
-releaseVersion := identity
 val cleanSonatype = ReleaseStep(action = { state =>
   IO.delete(file("target/sona-bundle"))
   IO.delete(file("target/sona-staging"))
   state
 })
+releasePublishArtifactsAction := PgpKeys.publishSigned.value
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
   inquireVersions,
   cleanSonatype,
   runClean,
   runTest,
-  //  setReleaseVersion,
-  //  commitReleaseVersion,
+  setReleaseVersion,
+  commitReleaseVersion,
   tagRelease,
-  releaseStepCommandAndRemaining("publishSigned"),
-  releaseStepCommand("sonaRelease"),
+  publishArtifacts,
   setNextVersion,
   commitNextVersion,
   pushChanges
