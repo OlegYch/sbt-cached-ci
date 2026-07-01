@@ -1,7 +1,7 @@
 [![Latest sbt2 Release](https://maven-badges.sml.io/sonatype-central/io.github.olegych/sbt-cached-ci_sbt2_3/badge.svg?subject=sbt2&color=blue)](https://central.sonatype.com/artifact/io.github.olegych/sbt-cached-ci_sbt2_3)
 [![Latest sbt1 Release](https://maven-badges.sml.io/sonatype-central/io.github.olegych/sbt-cached-ci_2.12_1.0/badge.svg?subject=sbt1&color=blue)](https://central.sonatype.com/artifact/io.github.olegych/sbt-cached-ci_2.12_1.0)
 
-![Github Build Status](https://github.com/OlegYch/sbt-cached-ci/workflows/CI/badge.svg)
+[![Github Build Status](https://github.com/OlegYch/sbt-cached-ci/workflows/CI/badge.svg)](https://github.com/OlegYch/sbt-cached-ci/actions/workflows/test.yml)
 [![CircleCI Build Status](https://circleci.com/gh/OlegYch/sbt-cached-ci.svg?style=svg)](https://circleci.com/gh/OlegYch/sbt-cached-ci)
 
 # sbt-cached-ci
