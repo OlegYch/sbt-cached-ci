@@ -2,14 +2,17 @@ name: Continuous Integration
 
 on:
   push:
-    branches: [ master ]
+    branches: [ '**' ]
   pull_request:
-    branches: [ master ]
+    branches: [ '**' ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Get current month
+        run: echo "CURRENT_MONTH=$(date +'%m')" >> $GITHUB_ENV
+
       - uses: actions/checkout@v6
 
       - name: Set up JDK 25
@@ -25,17 +28,17 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ~/.sbt
-          key: ${{ runner.os }}-sbt-${{ hashFiles('project/build.properties') }}
-          restore-keys: ${{ runner.os }}-sbt-
+          key: ${{ runner.os }}-sbt-${{ env.CURRENT_MONTH }}-${{ hashFiles('project/build.properties') }}
+          restore-keys: ${{ runner.os }}-sbt-${{ env.CURRENT_MONTH }}-
 
       - name: Cache coursier cache
         uses: actions/cache@v5
         with:
           path: ~/.cache/coursier
-          key: ${{ runner.os }}-coursier-${{ hashFiles('project/*') }}-${{ hashFiles('*.sbt') }}
+          key: ${{ runner.os }}-coursier-${{ env.CURRENT_MONTH }}-${{ hashFiles('project/*') }}-${{ hashFiles('*.sbt') }}
           restore-keys: | 
-            ${{ runner.os }}-coursier-${{ hashFiles('project/*') }}
-            ${{ runner.os }}-coursier-
+            ${{ runner.os }}-coursier-${{ env.CURRENT_MONTH }}-${{ hashFiles('project/*') }}
+            ${{ runner.os }}-coursier-${{ env.CURRENT_MONTH }}-
 
       - name: Cache project
         uses: actions/cache@v5
