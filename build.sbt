@@ -12,8 +12,10 @@ lazy val plugin = (projectMatrix in file("plugin"))
     scriptedBufferLog := false,
     // force lowest possible java target
     scalacOptions := Seq(if (scalaBinaryVersion.value.startsWith("3")) "-release:17" else "-target:jvm-1.8"),
+    // build against lowest possible sbt
+    pluginCrossBuild / sbtVersion := (if (scalaBinaryVersion.value.startsWith("3")) "2.0.0" else "1.5.8"),
     // test with latest sbt versions
-    scriptedSbt := (if (scalaBinaryVersion.value.startsWith("3")) "2.0.0" else "1.12.13"),
+    scriptedSbt := (if (scalaBinaryVersion.value.startsWith("3")) sbtVersion.value else "1.12.13"),
     sbtTestDirectory := sourceDirectory.value / (if (scalaBinaryVersion.value.startsWith("3")) "sbt2-test" else "sbt1-test"),
     addSbtPlugin("com.github.sbt" % "sbt2-compat" % "0.1.0"),
     cachedCiTestFull := scripted.toTask("").value,
