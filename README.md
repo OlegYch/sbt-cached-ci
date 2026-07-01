@@ -1,6 +1,8 @@
-![Github Build Status](https://github.com/OlegYch/sbt-cached-ci/workflows/Continuous%20Integration/badge.svg)
+[![Latest sbt2 Release](https://maven-badges.sml.io/sonatype-central/io.github.olegych/sbt-cached-ci_sbt2_3/badge.svg?subject=sbt2&color=blue)](https://central.sonatype.com/artifact/io.github.olegych/sbt-cached-ci_sbt2_3)
+[![Latest sbt1 Release](https://maven-badges.sml.io/sonatype-central/io.github.olegych/sbt-cached-ci_2.12_1.0/badge.svg?subject=sbt1&color=blue)](https://central.sonatype.com/artifact/io.github.olegych/sbt-cached-ci_2.12_1.0)
+
+![Github Build Status](https://github.com/OlegYch/sbt-cached-ci/workflows/CI/badge.svg)
 [![CircleCI Build Status](https://circleci.com/gh/OlegYch/sbt-cached-ci.svg?style=svg)](https://circleci.com/gh/OlegYch/sbt-cached-ci)
-[![sbt-cached-ci Latest Version](https://index.scala-lang.org/olegych/sbt-cached-ci/sbt-cached-ci/latest.svg)](https://index.scala-lang.org/olegych/sbt-cached-ci/sbt-cached-ci)
 
 # sbt-cached-ci
 
