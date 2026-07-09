@@ -20,5 +20,6 @@ lazy val plugin = (projectMatrix in file("plugin"))
     addSbtPlugin("com.github.sbt" % "sbt2-compat" % "0.1.0"),
     cachedCiTestFull := scripted.toTask("").value,
     cachedCiTestQuick := cachedCiTestFull.value,
+    Test / testFull := Def.uncached((Test / testFull).dependsOn(cachedCiTestFull).value),
   )
   .jvmPlatform(scalaVersions = Seq("3.8.4", "2.12.21"))
