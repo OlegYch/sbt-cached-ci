@@ -44,9 +44,9 @@ object CachedCiPlugin extends AutoPlugin {
     }
   }
 
-  val CachedCiTest = Tag("CachedCiTest")
   private val sbt2 = scala.util.Properties.versionNumberString.startsWith("3")
   private val testFull: TaskKey[?] = (if (sbt2) TaskKey[TestResult]("testFull") else TaskKey[Unit]("test"))
+
   override lazy val projectSettings = Seq(
     cachedCiTestFull := (Test / testFull).value,
     cachedCiTestQuick := (Test / testQuick).toTask("").value,
@@ -56,40 +56,32 @@ object CachedCiPlugin extends AutoPlugin {
       deps.map(toFile).map(_.toString).sorted.mkString
     },
     cachedCiTestFullPeriod := 24.hours,
-    // if the task is aggregated by sbt allow only one instance running to avoid issues with cross-versioned projects
-    // otherwise do the aggregation manually, allowing running cachedCiTest for independent projects in parallel
-    // if root project is not cross-built but there are any cross-built subprojects then `cachedCiTest / aggregate := true` should be set manually
-    cachedCiTest / aggregate := (crossScalaVersions.value.size > 1),
-    concurrentRestrictions ++= (if ((cachedCiTest / aggregate).value) List(Tags.exclusive(CachedCiTest)) else Nil),
-    cachedCiTest := Def.task {
-      val s = state.value
-      val extracted = Project.extract(s)
-      val aggregated = (cachedCiTest / aggregate).value
-      import extracted.*
-      def run(t: TaskKey[?]): Unit = {
+    cachedCiTest := Def.taskDyn {
+      val log = state.value.log
+
+      def run[T](t: TaskKey[T]) = Def.taskDyn {
         val label = s"${thisProjectRef.value.project} / ${t.key.label}"
-        s.log.info(s"Running $label")
-        if (aggregated) runTask(thisProjectRef.value / t, s) else {
-          val failed = Some(Exec(s"$label failed", None))
-          val newState = runAggregated(thisProjectRef.value / t, s.copy(onFailure = failed))
-          if (newState.remainingCommands.headOption == failed) throw new MessageOnlyException(s"$label failed")
-        }
+        Def.sequential(
+          Def.task(log.info(s"Running $label")),
+          t,
+        )
       }
 
       val cachedCiTestFullTokenValue = cachedCiTestFullToken.value
       val testFullToken = Token((if (crossPaths.value) crossTarget.value else target.value) / ".lastCachedCiTestFull", cachedCiTestFullTokenValue)
-      s.log.info(s"Last ${thisProjectRef.value.project} / ${cachedCiTest.key.label} was at ${testFullToken.lastModified}, token value changed: ${testFullToken.valueChanged}")
-      if (testFullToken.valid(cachedCiTestFullPeriod.value)) {
-        run(cachedCiTestQuick)
-      } else {
+      log.info(s"Last ${thisProjectRef.value.project} / ${cachedCiTest.key.label} was at ${testFullToken.lastModified}, token value changed: ${testFullToken.valueChanged}")
+      if (testFullToken.valid(cachedCiTestFullPeriod.value)) run(cachedCiTestQuick)
+      else {
         val cleanToken = Token(target.value / ".lastCachedCiTestClean", "")
-        if (!cleanToken.valid(cachedCiTestFullPeriod.value)) {
-          run(clean)
-          cleanToken.refresh()
-        }
-        run(cachedCiTestFull)
-        testFullToken.refresh()
+        val runClean = if (cleanToken.valid(cachedCiTestFullPeriod.value)) Nil else List(
+          run(clean),
+          Def.task(cleanToken.refresh()),
+        )
+        Def.sequential(runClean ++ List(
+          run(cachedCiTestFull),
+          Def.task(testFullToken.refresh()),
+        ))
       }
-    }.tag(CachedCiTest).value
+    }.value
   )
 }

@@ -25,5 +25,3 @@ Period between full test runs can be configured with `cachedCiTestFullPeriod` se
 `cachedCiTestQuick` configures what is executed on every build.
 
 `cachedCiTestFull` configures what is executed every `cachedCiTestFullPeriod`.
-
-If your subprojects use `crossScalaVersions`, enable aggregation like `cachedCiTest / aggregate := true`, or better yet - migrate to https://github.com/sbt/sbt-projectmatrix
