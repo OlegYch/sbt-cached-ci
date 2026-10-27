@@ -52,8 +52,9 @@ object CachedCiPlugin extends AutoPlugin {
     cachedCiTestQuick := (Test / testQuick).toTask("").value,
     cachedCiTestFullToken := {
       implicit val conv: xsbti.FileConverter = fileConverter.value
-      val deps = (Runtime / externalDependencyClasspath).value
-      deps.map(toFile).map(_.toString).sorted.mkString
+      val testDeps = (Test / externalDependencyClasspath).value
+      val runtimeDeps = (Runtime / externalDependencyClasspath).value
+      (testDeps ++ runtimeDeps).map(toFile).map(_.toString).mkString
     },
     cachedCiTestFullPeriod := 24.hours,
     cachedCiTest := Def.taskDyn {
