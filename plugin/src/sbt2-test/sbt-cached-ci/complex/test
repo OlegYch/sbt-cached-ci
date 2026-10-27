@@ -11,7 +11,7 @@ $ delete target/out/jvm/scala-2.13.16/a/A.result
 # nothing was executed
 $ absent target/out/jvm/scala-2.12.20/a/A.result
 $ absent target/out/jvm/scala-2.13.16/a/A.result
-$ delete target/out/jvm/scala-2.13.16/a/
+> ++2.13.16 a/clean
 > +cachedCiTest
 # only A 2.13 was executed
 $ absent target/out/jvm/scala-2.12.20/a/A.result
