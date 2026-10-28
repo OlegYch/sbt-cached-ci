@@ -1,9 +1,0 @@
-> cachedCiTest
-$ exists target/scala-3.8.4/classes/A.class
-$ copy target/scala-3.8.4/classes/A.class A.class
-> cachedCiTest
--$ newer target/scala-3.8.4/classes/A.class A.class
-> set cachedCiTestFullPeriod := scala.concurrent.duration.FiniteDuration(0, "s")
-> cachedCiTest
-$ newer target/scala-3.8.4/classes/A.class A.class
-
