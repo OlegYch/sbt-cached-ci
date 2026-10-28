@@ -1,30 +1,57 @@
 > +cachedCiTest
-> +b/clean
-> +b/cachedCiTest
-# B test depends on A test so it has to be newer than A
-$ exists target/out/jvm/scala-2.13.16/a/A.result
-$ exists target/out/jvm/scala-2.13.16/b/B.result
-$ newer target/out/jvm/scala-2.13.16/b/B.result target/out/jvm/scala-2.13.16/a/A.result
-$ delete target/out/jvm/scala-2.12.20/a/A.result
-$ delete target/out/jvm/scala-2.13.16/a/A.result
-> +cachedCiTest
-# nothing was executed
-$ absent target/out/jvm/scala-2.12.20/a/A.result
-$ absent target/out/jvm/scala-2.13.16/a/A.result
 > ++2.13.16 a/clean
 > +cachedCiTest
-# only A 2.13 was executed
-$ absent target/out/jvm/scala-2.12.20/a/A.result
-$ exists target/out/jvm/scala-2.13.16/a/A.result
-$ exists target/out/jvm/scala-2.13.16/b/B.result
-$ newer target/out/jvm/scala-2.13.16/a/A.result target/out/jvm/scala-2.13.16/b/B.result
-> +clean
-$ absent target/out/jvm/scala-2.12.20/a/A.result
-$ absent target/out/jvm/scala-2.13.16/a/A.result
-$ absent target/out/jvm/scala-2.12.20/b/B.result
-$ absent target/out/jvm/scala-2.13.16/b/B.result
+> ++2.13.16 a/clean
 > +cachedCiTest
-$ exists target/out/jvm/scala-2.12.20/a/A.result
-$ exists target/out/jvm/scala-2.13.16/a/A.result
-$ exists target/out/jvm/scala-2.12.20/b/B.result
-$ exists target/out/jvm/scala-2.13.16/b/B.result
+> ++2.13.16 a/clean
+> +cachedCiTest
+> ++2.13.16 a/clean
+> +cachedCiTest
+> ++2.13.16 a/clean
+> +cachedCiTest
+> ++2.13.16 a/clean
+> +cachedCiTest
+> ++2.13.16 a/clean
+> +cachedCiTest
+> ++2.13.16 a/clean
+> +cachedCiTest
+> ++2.13.16 a/clean
+> +cachedCiTest
+> ++2.13.16 a/clean
+> +cachedCiTest
+> ++2.13.16 a/clean
+> +cachedCiTest
+> ++2.13.16 a/clean
+> +cachedCiTest
+> ++2.13.16 a/clean
+> +cachedCiTest
+> ++2.13.16 a/clean
+> +cachedCiTest
+> ++2.13.16 a/clean
+> +cachedCiTest
+> ++2.13.16 a/clean
+> +cachedCiTest
+> ++2.13.16 a/clean
+> +cachedCiTest
+> ++2.13.16 a/clean
+> +cachedCiTest
+> ++2.13.16 a/clean
+> +cachedCiTest
+> ++2.13.16 a/clean
+> +cachedCiTest
+> ++2.13.16 a/clean
+> +cachedCiTest
+> ++2.13.16 a/clean
+> +cachedCiTest
+> ++2.13.16 a/clean
+> +cachedCiTest
+> ++2.13.16 a/clean
+> +cachedCiTest
+> ++2.13.16 a/clean
+> +cachedCiTest
+> ++2.13.16 a/clean
+> +cachedCiTest
+> ++2.13.16 a/clean
+> +cachedCiTest
+> ++2.13.16 a/clean
+> +cachedCiTest
