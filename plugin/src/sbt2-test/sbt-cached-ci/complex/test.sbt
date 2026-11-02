@@ -1,4 +1,5 @@
 lazy val root = project.in(file(".")).aggregate(a, b)
+@transient
 lazy val logTask = taskKey[Unit]("")
 lazy val a = project.settings(
   logTask := streams.value.log.info("Running a/testQuick"),
