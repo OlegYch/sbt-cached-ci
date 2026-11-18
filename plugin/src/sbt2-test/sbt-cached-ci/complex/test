@@ -13,8 +13,9 @@ $ absent target/out/jvm/scala-2.12.20/a/A.result
 $ absent target/out/jvm/scala-2.13.16/a/A.result
 > ++2.13.16 a/clean
 > +cachedCiTest
-# only A 2.13 was executed
-$ absent target/out/jvm/scala-2.12.20/a/A.result
+# sbt 2 clean invalidates A's task cache across Scala axes, so A 2.12 testQuick runs too.
+$ exists target/out/jvm/scala-2.12.20/a/A.result
+$ newer target/out/jvm/scala-2.12.20/a/A.result target/out/jvm/scala-2.12.20/b/B.result
 $ exists target/out/jvm/scala-2.13.16/a/A.result
 $ exists target/out/jvm/scala-2.13.16/b/B.result
 $ newer target/out/jvm/scala-2.13.16/a/A.result target/out/jvm/scala-2.13.16/b/B.result

@@ -9,16 +9,20 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        java: [17, 21, 25]
     steps:
       - name: Get current month
         run: echo "CURRENT_MONTH=$(date +'%m')" >> $GITHUB_ENV
 
       - uses: actions/checkout@v6
 
-      - name: Set up JDK 25
+      - name: Set up JDK ${{ matrix.java }}
         uses: actions/setup-java@v5
         with:
-          java-version: 25
+          java-version: ${{ matrix.java }}
           distribution: temurin
 
       - name: Set up SBT
@@ -44,8 +48,8 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ./
-          key: ${{ runner.os }}-project-${{ github.run_number }}
-          restore-keys: ${{ runner.os }}-project-
+          key: ${{ runner.os }}-${{ matrix.java }}-project-${{ github.run_number }}
+          restore-keys: ${{ runner.os }}-${{ matrix.java }}-project-
 
       - name: Checkout current
         run: git checkout . && git clean -df
@@ -58,4 +62,3 @@ jobs:
           find ~/.sbt        -name "*.lock"               -print -delete
           rm -rf ./.git
           rm -rf ./project/target #clean doesn't clean meta-build
-
